@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter , createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Quiz from '../views/Quiz.vue'
@@ -11,6 +11,10 @@ import SignUp from "../views/SignUp"
 import Logout from "@/views/logout";
 const router= createRouter({
     history: createWebHistory(),
+    root:  '/',
+    mode: 'html5',
+    linkActiveClass: "active",
+    hashbang: false,
     routes: [
         {
             path:'/',
