@@ -65,23 +65,28 @@
   </aside>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import logoURL from '../icons/cano.png'
-const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
-const ToggleMenu = () => {
-  is_expanded.value = !is_expanded.value
-  localStorage.setItem("is_expanded", is_expanded.value)
-}
-</script>
 <script>
+import {ref} from 'vue'
+import logoURL from '../icons/cano.png'
 import {mapGetters} from "vuex";
 
-export default {
+export default{
   name:'vueSidebar',
   computed:{
     ...mapGetters(['user'])
   },
+  setup(){
+    const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
+    const ToggleMenu = () => {
+      is_expanded.value = !is_expanded.value
+      localStorage.setItem("is_expanded", is_expanded.value)
+    }
+    return{
+      ToggleMenu,
+      logoURL,
+      is_expanded
+    }
+  }
 }
 </script>
 

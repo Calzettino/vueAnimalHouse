@@ -1,8 +1,8 @@
 <template>
   <main class="container quizPage">
-
+    <h1 class="pageTitle">AnimalQuiz</h1>
     <div v-if="!isHidden" class="container startQuiz">
-      <h1 class="pageTitle">AnimalQuiz</h1>
+
       <div class="container startContainer">
         <p>Test your animal knowledge with this tricky true or false quiz!</p>
         <p v-if="!user">Attention! Since you are not logged in, your score will not be saved.</p>
@@ -10,33 +10,35 @@
       </div>
     </div>
 
-    <div v-if="isHidden" class="container questionContainer">
-      <!--<Question :question="[question, imgUrl]"/>-->
-      <img :src="imgUrl" class="questionImg">
-      <p>{{question}}</p>
+    <div v-if="isHidden" class="row questionContainer">
 
-
-      <div class="optionsContainer">
-        <button :disabled="isDisabled" :class="vero" @click="answeredTrue" type="button" class="optionButton">true</button>
-        <button :disabled="isDisabled" :class="falso" @click="answeredFalse" class="optionButton">false</button>
+      <img :src="imgUrl" class=" col-xl-6">
+      <div class="col-xl-6">
+        <p>{{question}}</p>
+        <div class="optionsContainer" style="margin-bottom:1rem">
+          <button :disabled="isDisabled" :class="vero" @click="answeredTrue" type="button" class="optionButton">true</button>
+          <button :disabled="isDisabled" :class="falso" @click="answeredFalse" class="optionButton">false</button>
+        </div>
+        <button v-if="answered" class="next" @click="nextAnimal">next</button>
       </div>
-
-      <button v-if="answered" class="next" @click="nextAnimal">next</button>
 
       <div v-if="OpenClose" class="modal fade show" style="display:block" tabindex="-1" aria-labelledby="wrongAnswer" aria-modal="true" role="dialog">
         <div class="modal-dialog">
-          <div class="modal-content">
+          <div class="modal-content" style="color: var(--dark); background-color: var(--light)">
             <div class="modal-header">
               <h5 class="modal-title">Whoops!</h5>
               <button type="button" class="btn-close" @click="OpenCloseFun" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <slot>
-                <p>Wrong answer.. This is your score: {{score}}</p>
-              </slot>
+              <p>Wrong answer.. This is your score: {{score}}</p>
+              <p v-if="user">Go see your result in the leaderboard</p>
+              <p v-else>This score will not be saved because you are not logged in</p>
             </div>
             <div class="modal-footer">
+              <button v-if="user" type="button"  @click="$router.push('/')" :class="'btn btn-primary'">LeaderBoard</button>
+              <button v-else type="button"  @click="$router.push('/login')" :class="'btn btn-primary'">login</button>
               <button type="button"  @click="OpenCloseFun_Toggle" :class="'btn btn-success'">Close</button>
+
             </div>
           </div>
         </div>
@@ -74,19 +76,10 @@ export default{
       OpenClose:false
     }
   },
-  computed:{
-    ...mapGetters(['user'])
-  },
   methods:{
     async setQuestion(){
       //api request of two animal from
-      this.twoAnimals=await axios.get('http://localhost:8000/quiz/size/2', {
-        headers:{
-          'Access-Control-Allow-Origin': "*",
-          "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token"
-        }
-      })
+      this.twoAnimals=await axios.get('https://site212224.tw.cs.unibo.it/quiz/size/2')
           .then((response)=>{
             const animalOne = response.data[0]
             const animalTwo = response.data[1]
@@ -104,7 +97,7 @@ export default{
 
       //set the question
       const par = Math.floor(Math.random() * 10)
-      if ((this.twoAnimals.animalOne.id === this.twoAnimals.animalTwo) || (Math.floor(Math.random() * 2) % 2 === 0)) {
+      if ((this.twoAnimals.animalOne.id === this.twoAnimals.animalTwo.id) || (Math.floor(Math.random() * 2) % 2 === 0)) {
         this.animal= this.twoAnimals.animalOne
       }else{
         this.animal= this.twoAnimals.animalTwo
@@ -171,19 +164,28 @@ export default{
       this.setQuestion()
     },
     async OpenCloseFun(){
-      /*
+
       if(this.user && this.user.score<this.score){
-        await axios.post(`https://site212224.tw.cs.unibo.it/user/username/${localStorage.getItem('username')}`,{
+        console.log('ao:', this.user.username)
+        console.log(this.score)
+        await axios.patch(`https://site212224.tw.cs.unibo.it/user/username/${this.user.username}`,{
           score:this.score
         })
       }
-      */
+
+      console.log('user id: ', this.user)
       this.OpenClose=!this.OpenClose;
     },
     OpenCloseFun_Toggle(){
       this.toggle()
       this.OpenCloseFun();
+    },
+    login(){
+      this.$router.push('/login')
     }
+  },
+  computed:{
+    ...mapGetters(['user'])
   },
 }
 </script>
@@ -200,30 +202,31 @@ export default{
     padding-bottom: 40px;
   }
 }
-.optionsContainer{
-  display: flex;
-  justify-content: space-evenly;
-}
-.questionContainer{
-  color:white;
+.startContainer{
   width: 70%;
   height: 90%;
   margin: auto auto;
   background-color: var(--dark-alt);
   border-radius: 20px;
   padding:40px;
-  .correct{
-    background-color: green;
-    border:1px solid var(--primary) !important;
-    font-weight:bold;
-    color:white
-  }
-  .incorrect {
-    border: 1px solid var(--primary) !important;
-    font-weight: bold;
-    color: white;
-    background-color: red;
-  }
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+.next{
+  background-color: white;
+  border: none;
+  color: var(--dark-alt);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline;
+  font-size: 125%;
+  width:40%;
+  border-radius: 20px;
+  position:relative;
+  margin-top:2rem
 }
 .buttonStart{
   background-color: white;
@@ -251,37 +254,32 @@ export default{
   border-radius: 20px;
   margin: 0 auto;
 }
-.questionImg{
-  width: 100%;
-  height: 80%;
-  object-fit: contain;
-  margin-bottom:10px;
+.optionsContainer{
+  display: flex;
+  justify-content: space-evenly;
 }
-.startContainer{
-  width: 70%;
-  height: 90%;
-  margin: auto auto;
+.questionContainer{
+  color:white;
   background-color: var(--dark-alt);
   border-radius: 20px;
-  padding:40px;
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  color: white;
-}
-.next{
-  background-color: white;
-  border: none;
-  color: var(--dark-alt);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline;
-  font-size: 125%;
-  width:40%;
-  border-radius: 20px;
-  position:relative;
-  top:-250px
+  .correct{
+    background-color: green;
+    border:1px solid var(--primary) !important;
+    font-weight:bold;
+    color:white
+  }
+  .incorrect {
+    border: 1px solid var(--primary) !important;
+    font-weight: bold;
+    color: white;
+    background-color: red;
+  }
+  img{
+    max-height:25rem;
+    object-fit: contain;
+    margin-bottom:10px;
+    padding:1rem
+  }
 }
 @media (max-width: 768px) {
   .startContainer{

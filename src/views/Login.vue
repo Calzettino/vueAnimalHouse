@@ -14,9 +14,6 @@
         <input type="password" class="form-control" v-model="password" placeholder="Password" />
       </div>
       <button class="btn btn-primary" style="background-color: var(--dark-alt); border: 1px solid var(--dark)">Login</button>
-      <p class="forgot-password text-right">
-        Forgot password?
-      </p>
     </form>
   </div>
   </main>
@@ -24,14 +21,12 @@
 
 <script>
 import axios from "axios";
-import {mapGetters} from 'vuex'
 export default {
   name: "vueLogin",
   data(){
     return{
       username:'',
       password:'',
-      user:''
     }
   },
   methods:{
@@ -40,26 +35,22 @@ export default {
         username:this.username,
         password: this.password
       })
-
+      console.log(response)
       localStorage.setItem('token', response.data.authority)
 
       if(localStorage.getItem('token')!==null){
-        localStorage.setItem('username', this.username)
-        this.user=await axios.get(`https://site212224.tw.cs.unibo.it/user/username/${localStorage.getItem('username')}`)
+        this.user=await axios.get(`https://site212224.tw.cs.unibo.it/user/username/${this.username}`)
             .then((response)=>{
-              return response.data[0]
+              localStorage.setItem('username', response.data[0].username)
+              this.$store.dispatch('user', response.data[0])
             })
       }
-
-      this.$store.dispatch('user', this.user)
       console.log(localStorage.getItem('token'))
       console.log(localStorage.getItem('username'))
       this.$router.push('/')
+
     },
   },
-  computed:{
-    ...mapGetters(['user'])
-  }
 }
 </script>
 

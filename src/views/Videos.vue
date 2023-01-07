@@ -22,7 +22,7 @@
         <button @click="setDolphin(15)" :disabled="isDisabled(15)" class="animaLink">dolphin</button>
       </div>
 
-      <div class="row" style="display:table;   background-color: var(--dark); width: 100%; margin:0 auto" v-if="isVisible">
+      <div class="row" style="  background-color: var(--dark); width: 100%; margin:0 auto" v-if="isVisible">
         <div class="col-md-6">
           <div class="container ytContainer">
             <iframe class="yt" sameSite="Strict" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen v-if="isVisible" v-bind:src="video"  />
@@ -53,8 +53,8 @@ export default{
   },
   methods: {
     isDisabled(n_video){
-      console.log("(isDisabled) n_video= ", n_video)
-      console.log("(isDisabled) this.selectedVideo= ", this.selectedVideo)
+      //console.log("(isDisabled) n_video= ", n_video)
+      //console.log("(isDisabled) this.selectedVideo= ", this.selectedVideo)
        return n_video === this.selectedVideo;
     },
     setFirst(n_video){
@@ -66,8 +66,8 @@ export default{
     setDogs(n_video){
       this.selectedVideo=n_video
       this.isVisible=true
-      console.log("(setDogs) n_video= ", n_video)
-      console.log("(setDogs) this.selectedVideo= ", this.selectedVideo)
+      //console.log("(setDogs) n_video= ", n_video)
+      //console.log("(setDogs) this.selectedVideo= ", this.selectedVideo)
       this.video='https://www.youtube.com/embed/zznDuS5qabM'
       this.curiosity='three dogs survived the sinking of the Titanic? Vetstreet states that the dogs were in first class and included a Pomeranian puppy - which her owner wrapped in a blanket to escape with, and everyone thought she was carrying a baby. Another Pomeranian and a Pekingese were also rescued. Move over Rose and Jack!'
     },
@@ -219,12 +219,6 @@ export default{
   }
   .ytContainer{
     margin: 1rem 0
-  }
-}
-@media (min-width:1024px){
-  .row, .col-md-6{
-    display: table-cell;
-    vertical-align: top;
   }
 }
 </style>
