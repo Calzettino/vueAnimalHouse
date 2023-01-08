@@ -1,7 +1,7 @@
 <template>
 
   <header class="pad">
-      <h1 class="websiteTitle" style="width: fit-content;">Animal House</h1>
+      <h1 class="websiteTitle" style="width: fit-content;">AnimalHouse</h1>
     <a href="https://site212224.tw.cs.unibo.it/front/home" class="btn shopButton" >Go to the shop</a>
   </header>
 

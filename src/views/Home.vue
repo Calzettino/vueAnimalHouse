@@ -290,6 +290,7 @@ main{
   flex-direction: column;
   font-size: 1rem;
   color:var(--dark);
+  padding:0 6rem
 }
 form{
   text-align: left;

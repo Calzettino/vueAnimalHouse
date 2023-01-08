@@ -13,9 +13,9 @@
     <div v-if="isHidden" class="row questionContainer">
 
       <img :src="imgUrl" class=" col-xl-6" alt="{{animal.name}}">
-      <div class="col-xl-6">
-        <p>{{question}}</p>
-        <div class="optionsContainer" style="margin-bottom:1rem">
+      <div class="col-xl-6" style="margin-bottom:6rem">
+        <p class="pQuestion">{{question}}</p>
+        <div class="optionsContainer">
           <button :disabled="isDisabled" :class="vero" @click="answeredTrue" type="button" class="optionButton">true</button>
           <button :disabled="isDisabled" :class="falso" @click="answeredFalse" class="optionButton">false</button>
         </div>
@@ -45,6 +45,7 @@
       </div>
 
     </div>
+
   </main>
 </template>
 
@@ -97,7 +98,7 @@ export default{
 
       //set the question
       const par = Math.floor(Math.random() * 10)
-      if ((this.twoAnimals.animalOne.id === this.twoAnimals.animalTwo.id) || (Math.floor(Math.random() * 2) % 2 === 0)) {
+      if ((Math.floor(Math.random() * 2) % 2 === 0)) {
         this.animal= this.twoAnimals.animalOne
       }else{
         this.animal= this.twoAnimals.animalTwo
@@ -226,7 +227,7 @@ export default{
   width:40%;
   border-radius: 20px;
   position:relative;
-  margin-top:2rem
+  margin-top:0.5rem
 }
 .buttonStart{
   background-color: white;
@@ -274,6 +275,9 @@ export default{
     color: white;
     background-color: red;
   }
+  .pQuestion{
+    margin-top: 5rem;
+  }
   img{
     max-height:25rem;
     object-fit: contain;
@@ -281,12 +285,15 @@ export default{
     padding:1rem
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 1199.9px) {
   .startContainer{
     width: 100%;
   }
   .questionContainer{
     width: 100%;
+    .pQuestion{
+      margin-top: 0;
+    }
   }
   .buttonStart{
     width: 70%;
