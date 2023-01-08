@@ -38,7 +38,7 @@ export default {
         password: this.password
       }).catch((err)=>{
         console.log('error:',err)
-        this.error='wrong password'
+        this.error='wrong username or password'
       })
       console.log(response)
       localStorage.setItem('token', response.data.authority)
@@ -47,6 +47,7 @@ export default {
         this.user=await axios.get(`https://site212224.tw.cs.unibo.it/user/username/${this.username}`)
             .then((response)=>{
               localStorage.setItem('username', response.data[0].username)
+              localStorage.setItem('userid', response.data[0]._id)
               this.$store.dispatch('user', response.data[0])
             }).catch((err)=>{
               console.log('error:',err)

@@ -35,7 +35,7 @@
               <p v-else>This score will not be saved because you are not logged in</p>
             </div>
             <div class="modal-footer">
-              <button v-if="user" type="button"  @click="$router.push('/')" :class="'btn btn-primary'">LeaderBoard</button>
+              <a v-if="user" type="button"  href="https://site212224.tw.cs.unibo.it/front/account" :class="'btn btn-primary'">LeaderBoard</a>
               <button v-else type="button"  @click="$router.push('/login')" :class="'btn btn-primary'">login</button>
               <button type="button"  @click="OpenCloseFun_Toggle" :class="'btn btn-success'">Close</button>
 
